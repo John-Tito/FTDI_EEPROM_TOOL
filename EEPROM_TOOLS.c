@@ -3,15 +3,15 @@
  * Licensed under the GNU GPLv3; see COPYING for details.
  **/
 
+#include "ftd2xx.h"
 #include <getopt.h>
 #include <stdarg.h>
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
-#include <stdint.h>
 #include <time.h>
-#include "ftd2xx.h"
+#include <unistd.h>
 
 static bool verbose_mode = false;
 int dump_out(char *file_name, FT_HANDLE ftHandle, uint16_t offset, uint16_t size, uint8_t auto_checksum);
@@ -166,6 +166,23 @@ int main_process(
         printf("\r\nwhich ot open\r\n");
         scanf("%d", &index);
     }
+    else if (c_write)
+    {
+        char c_sel;
+        printf("\r\ndo you really want to write data to this device? ( y | n )\r\n");
+        fflush(stdin);
+        scanf("%s", &c_sel);
+        switch (c_sel)
+        {
+        case 'y':
+        case 'Y':
+            c_write = 1U;
+            break;
+        default:
+            c_write = 0U;
+            break;
+        }
+    }
 
     FT_HANDLE handler;
     ftdi_status = FT_OpenEx(ftdi_device_list[index].LocId, FT_OPEN_BY_LOCATION, &handler);
@@ -229,12 +246,12 @@ int dump_out(char *file_name, FT_HANDLE ftHandle, uint16_t offset, uint16_t size
     {
         // check data
         uint16_t check_sum = 0xAAAA;
-        for (uint32_t i = 0; i < 127; i++)
+        for (uint32_t i = 0; i < size - 1; i++)
         {
             check_sum = ee_data[i] ^ check_sum;
             check_sum = (check_sum << 1) | (check_sum >> 15);
         }
-        if (check_sum != ee_data[127])
+        if (check_sum != ee_data[size - 1])
         {
             printf("\r\n %s, check sum error \r\n", file_name);
             return -3;
@@ -284,16 +301,22 @@ int dump_in(char *file_name, FT_HANDLE ftHandle, uint16_t offset, uint16_t size,
     if (auto_checksum)
     {
         uint16_t check_sum = 0xAAAA;
-        for (uint32_t i = 0; i < 127; i++)
+        for (uint32_t i = 0; i < size - 1; i++)
         {
             check_sum = ee_data[i] ^ check_sum;
             check_sum = (check_sum << 1) | (check_sum >> 15);
         }
-        if (check_sum != ee_data[127])
+        if (check_sum != ee_data[size - 1])
         {
             printf("\r\n %s, check sum error \r\n", file_name);
-            ee_data[127] = check_sum;
+            ee_data[size - 1] = check_sum;
         }
+    }
+
+    FT_EraseEE(ftHandle);
+    for (uint32_t i = 0; i < size; i++)
+    {
+        FT_WriteEE(ftHandle, i + offset, ee_data[i]);
     }
 
     free(ee_data);
