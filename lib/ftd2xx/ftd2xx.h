@@ -1,6 +1,6 @@
 /*++
 
-Copyright Â© 2001-2021 Future Technology Devices International Limited
+Copyright © 2001-2021 Future Technology Devices International Limited
 
 THIS SOFTWARE IS PROVIDED BY FUTURE TECHNOLOGY DEVICES INTERNATIONAL LIMITED "AS IS"
 AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
@@ -313,7 +313,7 @@ enum {
 #define FT_X_SERIES_CBUS_BITBANG_WR			0x12	//	Bit-bang write strobe
 #define FT_X_SERIES_CBUS_BITBANG_RD			0x13	//	Bit-bang read strobe
 #define FT_X_SERIES_CBUS_TIMESTAMP			0x14	//	Toggle output when a USB SOF token is received
-#define FT_X_SERIES_CBUS_KEEP_AWAKE			0x15	//
+#define FT_X_SERIES_CBUS_KEEP_AWAKE			0x15	//	
 
 
 // Driver types
@@ -542,12 +542,12 @@ extern "C" {
 		);
 
 	//
-	// structure to hold program data for FT_EE_Program, FT_EE_ProgramEx, FT_EE_Read
+	// structure to hold program data for FT_EE_Program, FT_EE_ProgramEx, FT_EE_Read 
 	// and FT_EE_ReadEx functions
 	//
 	typedef struct ft_program_data {
 
-		DWORD Signature1;			// Header - must be 0x00000000
+		DWORD Signature1;			// Header - must be 0x00000000 
 		DWORD Signature2;			// Header - must be 0xffffffff
 		DWORD Version;				// Header - FT_PROGRAM_DATA version
 		//			0 = original
@@ -919,7 +919,7 @@ extern "C" {
 		UCHAR IsFifoTar;			// non-zero if interface is 245 FIFO CPU target
 		UCHAR IsFastSer;			// non-zero if interface is Fast serial
 		UCHAR IsFT1248;			// non-zero if interface is FT1248
-		UCHAR PowerSaveEnable;		//
+		UCHAR PowerSaveEnable;		// 
 		// Driver option
 		UCHAR DriverType;			// non-zero if interface is to use VCP drivers
 	} FT_EEPROM_232H, *PFT_EEPROM_232H;
@@ -966,8 +966,8 @@ extern "C" {
 		UCHAR FT1248Lsb;			// FT1248 data is LSB (1) or MSB (0)
 		UCHAR FT1248FlowControl;	// FT1248 flow control enable
 		// Hardware options
-		UCHAR RS485EchoSuppress;	//
-		UCHAR PowerSaveEnable;		//
+		UCHAR RS485EchoSuppress;	// 
+		UCHAR PowerSaveEnable;		// 
 		// Driver option
 		UCHAR DriverType;			// non-zero if interface is to use VCP drivers
 	} FT_EEPROM_X_SERIES, *PFT_EEPROM_X_SERIES;
@@ -1053,7 +1053,7 @@ extern "C" {
 	} FT_EEPROM_PD_PDO_mv_ma;
 
 	// PD EEPROM structure for use with FT_EEPROM_Read and FT_EEPROM_Program
-	// This is appended to the end of the base device structure. e_g.
+	// This is appended to the end of the base device structure. e_g. 
 	//		struct {
 	//			FT_EEPROM_xxx base;
 	//			FT_EEPROM_PD pd;
@@ -1077,7 +1077,7 @@ extern "C" {
 		UCHAR extvconn;		// non-zero to enable External vConn
 
 		// GPIO Configuration
-		UCHAR count;		// GPIO Count, supported values are 0 to 7
+		UCHAR count;		// GPIO Count, supported values are 0 to 7 
 		UCHAR gpio1;		// GPIO Number 1, supports device GPIO values
 		UCHAR gpio2;		// GPIO Number 2, supports device GPIO values
 		UCHAR gpio3;		// GPIO Number 3, supports device GPIO values
@@ -1269,7 +1269,7 @@ extern "C" {
 		FT_HANDLE ftHandle,
 		LPDWORD lpdwLocId
 		);
-#endif // _WIN32
+#endif // _WIN32        
 
 	FTD2XX_API
 		FT_STATUS WINAPI FT_GetDeviceInfo(
